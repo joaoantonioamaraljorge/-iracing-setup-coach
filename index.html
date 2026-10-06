@@ -4,7 +4,164 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>iRacing Setup Coach</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0b0f14;
+      color: #f4f7fb;
+    }
+
+    header {
+      text-align: center;
+      padding: 42px 20px;
+      background: linear-gradient(135deg, #111923, #17283b);
+      border-bottom: 1px solid #27384a;
+    }
+
+    .logo {
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    .logo span {
+      color: #4da3ff;
+    }
+
+    header p {
+      color: #b9c7d6;
+    }
+
+    main {
+      width: min(900px, 92%);
+      margin: 30px auto 60px;
+    }
+
+    .card {
+      background: #121a24;
+      border: 1px solid #263546;
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #3b4d61;
+      background: #0d141d;
+      color: white;
+      font-size: 16px;
+    }
+
+    label {
+      display: block;
+      margin: 22px 0 10px;
+      color: #d7e2ed;
+      font-weight: bold;
+    }
+
+    .choices {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .choices button {
+      flex: 1;
+      min-width: 150px;
+      padding: 13px;
+      border-radius: 10px;
+      border: 1px solid #3a4d62;
+      background: #0d141d;
+      color: #d9e4ef;
+      cursor: pointer;
+    }
+
+    .choices button:hover,
+    .choices button.selected {
+      background: #1e6fd1;
+      border-color: #4da3ff;
+      color: white;
+    }
+
+    .generate {
+      width: 100%;
+      margin-top: 30px;
+      padding: 17px;
+      border: 0;
+      border-radius: 11px;
+      background: #1683ff;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .generate:hover {
+      background: #0d6ed8;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result {
+      border-color: #1e6fd1;
+    }
+
+    .setup-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .setup-item {
+      background: #0d141d;
+      border: 1px solid #293a4c;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .setup-item strong {
+      display: block;
+      color: #76baff;
+      margin-bottom: 5px;
+    }
+
+    .warning {
+      color: #aebdca;
+      font-size: 13px;
+      margin-top: 25px;
+    }
+
+    footer {
+      text-align: center;
+      color: #738496;
+      padding: 30px;
+    }
+
+    @media (max-width: 600px) {
+      .logo {
+        font-size: 27px;
+      }
+
+      .setup-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -128,6 +285,181 @@
     iRacing Setup Coach • Projeto educacional
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    const answers = {};
+
+    document.querySelectorAll(".choices button").forEach(button => {
+      button.addEventListener("click", () => {
+        const group = button.dataset.group;
+        answers[group] = button.dataset.value;
+
+        document.querySelectorAll(`[data-group="${group}"]`).forEach(b => {
+          b.classList.remove("selected");
+        });
+
+        button.classList.add("selected");
+      });
+    });
+
+    function selectedText(value) {
+      const map = {
+        stable: "estável",
+        loose: "solto",
+        rotation: "com mais rotação",
+        aggressive: "forte/agressivo",
+        progressive: "progressivo",
+        understeer: "sai de frente",
+        oversteer: "sai de traseira",
+        none: "equilibrado",
+        early: "acelerar cedo",
+        safe: "mais segurança",
+        yes: "sim",
+        no: "não"
+      };
+      return map[value] || value;
+    }
+
+    function getCarCategory(carValue) {
+      if (["formula_vee", "formula_1600", "formula_4", "formula_3", "super_formula"].includes(carValue)) {
+        return "formula";
+      }
+      if (["lmp3", "lmp2", "gtp"].includes(carValue)) {
+        return "prototipo";
+      }
+      return "gt";
+    }
+
+    function makeSetup(carValue) {
+      const category = getCarCategory(carValue);
+      let explanation = [];
+
+      let setup = {
+        brake: "Bias: 55.0%",
+        antiRoll: "Barra F: 3 / T: 2",
+        differential: "Rampas: 50/64",
+        suspension: "Spring Perch: Padrão",
+        aero: "Asa Dianteira: 3° / Traseira: 6°",
+        tire: "PSI F: 20.0 / T: 19.0"
+      };
+
+      if (category === "formula") {
+        setup.brake = "Bias: 56.5% (Pressão: 100%)";
+        setup.antiRoll = "Blade Dianteira: Posição 3";
+        setup.differential = "Diferencial Fixo / Spool";
+        setup.suspension = "Quinas/Molas: -1 volta de altura";
+        setup.aero = "Asa Dianteira: 2° | Traseira: 4°";
+        setup.tire = "PSI F: 17.5 / T: 16.5";
+      } else if (category === "gt") {
+        setup.brake = "Bias: 54.0% | ABS: 4";
+        setup.antiRoll = "Blade Dianteira: 4 (Média)";
+        setup.differential = "Clutches: 6 | Preload: 60 Nm";
+        setup.suspension = "Bump: +2 cliques | Rebound: +1 clique";
+        setup.aero = "Asa Traseira: 5° (Angulação GT)";
+        setup.tire = "PSI F: 20.5 / T: 19.5 (Quente)";
+      } else if (category === "prototipo") {
+        setup.brake = "Bias: 55.5% | Migration: 2.0%";
+        setup.antiRoll = "Barra F: 4 / T: 3 (Firme)";
+        setup.differential = "Rampas: 40/60 | Preload: 80 Nm";
+        setup.suspension = "Heave Spring: Posição 3";
+        setup.aero = "Asa Dianteira: 4° | Gurney flap: Sim";
+        setup.tire = "PSI F: 21.0 / T: 20.0";
+      }
+
+      if (answers.problem === "understeer") {
+        if (category === "formula") {
+          setup.aero = "Asa Dianteira: +1° (Mais frente)";
+          setup.antiRoll = "Blade Dianteira: Posição 2 (Mais macia)";
+        } else {
+          setup.antiRoll = "Blade Dianteira: 2 (Mais macia na frente)";
+          setup.aero = "Asa Dianteira: +1° / Traseira: -1°";
+        }
+        explanation.push("Como você sente o carro saindo de frente, a recomendação busca aumentar a capacidade de rotação do eixo dianteiro.");
+      }
+
+      if (answers.problem === "oversteer") {
+        if (category === "formula") {
+          setup.aero = "Asa Traseira: +2° (Mais estabilidade)";
+        } else {
+          setup.antiRoll = "Blade Traseira: 5 (Mais firme/estável)";
+          setup.differential = "Clutches: 8 (Mais progressivo na tração)";
+        }
+        explanation.push("Como a traseira está escapando, a prioridade é deixar a transferência de carga mais previsível.");
+      }
+
+      if (answers.entry === "rotation") {
+        setup.suspension = "Bump stiffness: +2 cliques (Frente ágil)";
+        explanation.push("Você gosta de rotação na entrada, então o setup prioriza uma resposta mais rápida da suspensão dianteira.");
+      }
+
+      if (answers.entry === "stable") {
+        setup.suspension = "Bump stiffness: -2 cliques (Frenagem estável)";
+        explanation.push("A estabilidade na entrada foi priorizada para deixar a frenagem e o início da curva mais previsíveis.");
+      }
+
+      if (answers.brake === "aggressive") {
+        setup.brake = setup.brake.replace("Bias: ", "Bias: (Agressivo) ");
+        explanation.push("O freio foi direcionado para uma resposta mais direta.");
+      } else if (answers.brake === "progressive") {
+        setup.brake = setup.brake.replace("Bias: ", "Bias: (Progressivo) ");
+        explanation.push("O freio foi pensado para facilitar a modulação e evitar travamentos.");
+      }
+
+      if (answers.exit === "early") {
+        setup.differential = "Preload: +10 Nm / Rampa otimizada";
+        explanation.push("Como você quer acelerar cedo, o diferencial recebeu ajustes para melhorar a tração na saída.");
+      }
+
+      if (answers.curbs === "yes") {
+        setup.suspension = "Slow Compression: -3 cliques (Tolerância a zebras)";
+        explanation.push("Como você usa bastante as zebras, a suspensão foi amaciada para absorver melhor as ondulações.");
+      }
+
+      if (answers.stability === "loose") {
+        explanation.push("Seu perfil aceita um carro mais solto, permitindo trocas de direção mais rápidas.");
+      } else if (answers.stability === "stable") {
+        explanation.push("Seu perfil indica preferência por uma plataforma altamente estável.");
+      }
+
+      return setup;
+    }
+
+    document.getElementById("generate").addEventListener("click", () => {
+      const car = document.getElementById("car");
+      const track = document.getElementById("track");
+
+      if (!car.value || !track.value) {
+        alert("Escolha o carro e a pista antes de gerar o setup.");
+        return;
+      }
+
+      const setup = makeSetup(car.value);
+
+      document.getElementById("summary").innerHTML = `
+        <p><strong>Carro:</strong> ${car.options[car.selectedIndex].text}</p>
+        <p><strong>Pista:</strong> ${track.options[track.selectedIndex].text}</p>
+        <p><strong>Perfil:</strong> ${selectedText(answers.stability) || "não informado"}</p>
+      `;
+
+      document.getElementById("setup").innerHTML = `
+        <div class="setup-grid">
+          <div class="setup-item"><strong>Freio (Bias / ABS)</strong>${setup.brake}</div>
+          <div class="setup-item"><strong>Barra Estabilizadora</strong>${setup.antiRoll}</div>
+          <div class="setup-item"><strong>Diferencial</strong>${setup.differential}</div>
+          <div class="setup-item"><strong>Suspensão</strong>${setup.suspension}</div>
+          <div class="setup-item"><strong>Aerodinâmica / Asas</strong>${setup.aero}</div>
+          <div class="setup-item"><strong>Pressão de Pneus</strong>${setup.tire}</div>
+        </div>
+      `;
+
+      document.getElementById("explanation").innerHTML = `
+        <h3>📚 Por que esse setup?</h3>
+        ${setup.explanation.map(x => `<p>• ${x}</p>`).join("")}
+      `;
+
+      const result = document.getElementById("result");
+      result.classList.remove("hidden");
+      result.scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
 </body>
 </html>
