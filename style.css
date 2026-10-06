@@ -1,0 +1,164 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #0b0f14;
+  color: #f4f7fb;
+}
+
+header {
+  text-align: center;
+  padding: 42px 20px;
+  background: linear-gradient(135deg, #111923, #17283b);
+  border-bottom: 1px solid #27384a;
+}
+
+.logo {
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.logo span {
+  color: #4da3ff;
+}
+
+header p {
+  color: #b9c7d6;
+}
+
+main {
+  width: min(900px, 92%);
+  margin: 30px auto 60px;
+}
+
+.card {
+  background: #121a24;
+  border: 1px solid #263546;
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 22px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+}
+
+h2 {
+  margin-top: 0;
+}
+
+select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #3b4d61;
+  background: #0d141d;
+  color: white;
+  font-size: 16px;
+}
+
+label {
+  display: block;
+  margin: 22px 0 10px;
+  color: #d7e2ed;
+  font-weight: bold;
+}
+
+.choices {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.choices button {
+  flex: 1;
+  min-width: 150px;
+  padding: 13px;
+  border-radius: 10px;
+  border: 1px solid #3a4d62;
+  background: #0d141d;
+  color: #d9e4ef;
+  cursor: pointer;
+}
+
+.choices button:hover,
+.choices button.selected {
+  background: #1e6fd1;
+  border-color: #4da3ff;
+  color: white;
+}
+
+.generate {
+  width: 100%;
+  margin-top: 30px;
+  padding: 17px;
+  border: 0;
+  border-radius: 11px;
+  background: #1683ff;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.generate:hover {
+  background: #0d6ed8;
+}
+
+.hidden {
+  display: none;
+}
+
+.result {
+  border-color: #1e6fd1;
+}
+
+.setup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.setup-item {
+  background: #0d141d;
+  border: 1px solid #293a4c;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.setup-item strong {
+  display: block;
+  color: #76baff;
+  margin-bottom: 5px;
+}
+
+.explanation {
+  padding: 15px;
+  background: #0d141d;
+  border-left: 4px solid #1683ff;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.warning {
+  color: #aebdca;
+  font-size: 13px;
+  margin-top: 25px;
+}
+
+footer {
+  text-align: center;
+  color: #738496;
+  padding: 30px;
+}
+
+@media (max-width: 600px) {
+  .logo {
+    font-size: 27px;
+  }
+
+  .setup-grid {
+    grid-template-columns: 1fr;
+  }
+}

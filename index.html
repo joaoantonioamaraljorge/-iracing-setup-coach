@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iRacing Setup Coach</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">iRacing <span>Setup Coach</span></div>
+    <p>Aprenda a montar setups com base no seu estilo de pilotagem.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1. Escolha o carro</h2>
+      <select id="car">
+        <option value="">Selecione um carro</option>
+        <optgroup label="Fórmulas">
+          <option value="formula_vee">Formula Vee</option>
+          <option value="formula_1600">Formula 1600</option>
+          <option value="formula_4">Formula 4</option>
+          <option value="formula_3">Formula 3</option>
+          <option value="super_formula">Super Formula</option>
+        </optgroup>
+        <optgroup label="Turismos / GT">
+          <option value="mx5">Mazda MX-5</option>
+          <option value="gr86">Toyota GR86</option>
+          <option value="ferrari296">Ferrari 296 GT3</option>
+          <option value="porsche992">Porsche 911 GT3</option>
+          <option value="mercedes_gt3">Mercedes-AMG GT3</option>
+          <option value="bmw_m4_gt3">BMW M4 GT3</option>
+        </optgroup>
+        <optgroup label="Protótipos">
+          <option value="lmp3">LMP3</option>
+          <option value="lmp2">LMP2</option>
+          <option value="gtp">GTP</option>
+        </optgroup>
+      </select>
+    </section>
+
+    <section class="card">
+      <h2>2. Escolha a pista</h2>
+      <select id="track">
+        <option value="">Selecione uma pista</option>
+        <optgroup label="🟢 Gratuitas">
+          <option value="lime_rock">Lime Rock Park</option>
+          <option value="okayama">Okayama</option>
+          <option value="charlotte">Charlotte Roval</option>
+          <option value="tsukuba">Tsukuba</option>
+          <option value="summit_point">Summit Point</option>
+          <option value="laguna_seca">WeatherTech Raceway Laguna Seca</option>
+          <option value="rudskogen">Rudskogen</option>
+        </optgroup>
+        <optgroup label="⭐ Famosas">
+          <option value="interlagos">Interlagos</option>
+          <option value="spa">Spa-Francorchamps</option>
+          <option value="monza">Monza</option>
+          <option value="silverstone">Silverstone</option>
+          <option value="nurburgring">Nürburgring</option>
+          <option value="daytona">Daytona</option>
+          <option value="road_america">Road America</option>
+          <option value="watkins_glen">Watkins Glen</option>
+          <option value="sebring">Sebring</option>
+          <option value="suzuka">Suzuka</option>
+          <option value="imola">Imola</option>
+        </optgroup>
+      </select>
+    </section>
+
+    <section class="card">
+      <h2>3. Conte como você pilota</h2>
+
+      <label>Você prefere o carro:</label>
+      <div class="choices">
+        <button data-group="stability" data-value="stable">Mais estável</button>
+        <button data-group="stability" data-value="loose">Mais solto</button>
+      </div>
+
+      <label>Na entrada da curva, você prefere:</label>
+      <div class="choices">
+        <button data-group="entry" data-value="stable">Estabilidade</button>
+        <button data-group="entry" data-value="rotation">Mais rotação</button>
+      </div>
+
+      <label>Como você prefere o freio?</label>
+      <div class="choices">
+        <button data-group="brake" data-value="aggressive">Forte/agressivo</button>
+        <button data-group="brake" data-value="progressive">Progressivo</button>
+      </div>
+
+      <label>Qual problema acontece mais com você?</label>
+      <div class="choices">
+        <button data-group="problem" data-value="understeer">Sai de frente</button>
+        <button data-group="problem" data-value="oversteer">Sai de traseira</button>
+        <button data-group="problem" data-value="none">Nenhum dos dois</button>
+      </div>
+
+      <label>Na saída da curva você prefere:</label>
+      <div class="choices">
+        <button data-group="exit" data-value="early">Acelerar cedo</button>
+        <button data-group="exit" data-value="safe">Mais segurança</button>
+      </div>
+
+      <label>Você costuma usar bastante as zebras?</label>
+      <div class="choices">
+        <button data-group="curbs" data-value="yes">Sim</button>
+        <button data-group="curbs" data-value="no">Não</button>
+      </div>
+
+      <button id="generate" class="generate">GERAR MEU SETUP</button>
+    </section>
+
+    <section id="result" class="card result hidden">
+      <h2>🔧 Seu Setup Recomendado</h2>
+      <div id="summary"></div>
+      <div id="setup"></div>
+      <div id="explanation"></div>
+      <p class="warning">
+        ⚠️ Este é um protótipo educacional. Os valores são recomendações genéricas,
+        não substituem o setup específico do carro/versão da pista no iRacing.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    iRacing Setup Coach • Projeto educacional
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
